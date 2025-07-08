@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+      - neo4j
+    command: sh -c "npx prisma migrate deploy && npm run start:prod"
+
+  postgres:
+    image: postgres:15 #16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tiwana
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine #redis:7.2-alpine 
+    ports:
+      - "6379:6379"
+
+  neo4j:
+    image: neo4j:5 #5.20
+    environment:
+      NEO4J_AUTH: neo4j/tiwana123
+    ports:
+      - "7474:7474"   # browser UI
+      - "7687:7687"   # bolt protocol
+    volumes:
+      - ./docker/neo4j:/data
