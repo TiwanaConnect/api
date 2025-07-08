@@ -1,18 +1,20 @@
-import { Logger, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { ConfigModule } from '@nestjs/config';
-import { Neo4jModule } from './common/infrastructure';
-import { PrismaModule } from './common/infrastructure';
-import { GeoModule } from './common/infrastructure';
-import { TerminusModule } from '@nestjs/terminus';
-import { CacheModule } from '@nestjs/cache-manager';
-import { EmailModule } from './common/infrastructure';
-import { SecurityModule } from './common/infrastructure';
-import { LoggerModule } from './common/infrastructure';
+import { Logger, Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { ConfigModule } from "@nestjs/config";
+import { Neo4jModule } from "./common/infrastructure";
+import { PrismaModule } from "./common/infrastructure";
+import { GeoModule } from "./common/infrastructure";
+import { TerminusModule } from "@nestjs/terminus";
+import { CacheModule } from "@nestjs/cache-manager";
+import { EmailModule } from "./common/infrastructure";
+import { SecurityModule } from "./common/infrastructure";
+import { LoggerModule } from "./common/infrastructure";
+import { AgentModule } from "./common/infrastructure/AI/agent/agent.module";
+import { ToolModule } from "./common/infrastructure/AI/tool/tool.module";
 // import { RedisModule } from './common/infrastructure/store/redis/redis.module';
-import config from './config/config';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { ScheduleModule } from '@nestjs/schedule';
+import config from "./config/config";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     SecurityModule,
     LoggerModule,
     TerminusModule,
+    AgentModule,
+    ToolModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,

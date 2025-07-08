@@ -13,7 +13,9 @@ export default () => ({
   redis: {
     uri: process.env.REDIS_URI,
   },
-
+  aiagent: {
+    llmtoken: process.env.LLM_API_KEY,
+  },
   origins: process.env.ORIGINS,
   domain: process.env.DOMAIN,
   healthChecks: {
