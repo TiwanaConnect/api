@@ -42,5 +42,5 @@ services:
       - postgres 
       - redis
       - neo4j
-    command: sh -c "npm run start:prod"
+    command: sh -c "npx prisma migrate deploy && npm run start:prod"
 
