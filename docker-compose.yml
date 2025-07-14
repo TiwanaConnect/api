@@ -1,18 +1,6 @@
 version: "3.8"
 
 services:
-  api:
-    build: .
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-      - redis
-      - neo4j
-    command: sh -c "npx prisma migrate deploy && npm run start:prod"
-
   postgres:
     image: postgres:15 #16
     environment:
@@ -23,6 +11,11 @@ services:
       - "5432:5432"
     volumes:
       - ./docker/postgres:/var/lib/postgresql/data
+    healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U postgres"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
 
   redis:
     image: redis:alpine #redis:7.2-alpine 
@@ -38,3 +31,16 @@ services:
       - "7687:7687"   # bolt protocol
     volumes:
       - ./docker/neo4j:/data
+
+  api:
+    build: .
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env.docker
+    depends_on:
+      - postgres 
+      - redis
+      - neo4j
+    command: sh -c "npm run start:prod"
+
